@@ -20,7 +20,7 @@ This project is a simple blog application built using Django, djangorestframewor
 - **requirements.txt**: Lists the Python dependencies required for the project.
 
 ## Setup
-1. Clone the repository: `git clone <https://github.com/ladiyusuph/blog_app.git>`
+1. Clone the repository: `git clone https://github.com/ladiyusuph/blog_app.git`
 2. Navigate to the project directory: `cd blog_app`
 3. Install dependencies: `pip install -r requirements.txt`
 4. Run migrations: `python manage.py migrate`

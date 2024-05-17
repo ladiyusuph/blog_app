@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Create a Post
+{% endblock %}
+
+{% block content %}
+  <form class="form" action="#" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form__group">
+      <label for="room_topic">Enter a Topic</label>
+      <input required type="text" value="{{ room.topic.name }}" name="topic" list="topic-list" />
+      <datalist id="topic-list">
+        <select id="room_topic">
+          {% for topic in topics %}
+            <option value="{{ topic.name }}">{{ topic.name }}</option>
+          {% endfor %}
+        </select>
+      </datalist>
+    </div>
+
+    <div class="form__group">
+      <label for="cover_photo">Cover Photo</label>
+      <input type="file" id="cover_photo" name="thumbnail" accept="image/*" />
+    </div>
+
+    <div class="form__group">
+      <label for="room_name">Title</label>
+      {{ form.title }}
+    </div>
+    <div class="form__group">
+      <label for="room_description">Post</label>
+      {{ form.body }}
+    </div>
+
+    <div class="form__action">
+      <a class="btn btn--dark" href="{% url 'posts' %}">Cancel</a>
+      <button class="btn btn--main" type="submit">Submit</button>
+    </div>
+  </form>
+{% endblock %}

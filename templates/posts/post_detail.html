@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  {{ post.title }}
+{% endblock %}
+
+{% block content %}
+  {% if post.thumbnail %}
+    <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" />
+  {% endif %}
+  <h1>{{ post.title }}</h1>
+  <p>{{ post.body }}</p>
+  {% if msg %}
+    <button><a href="{% url "like" post.slug %}">Unlike</a></button>
+  {% else %}
+    <button><a href="{% url "like" post.slug %}">Like</a></button>
+  {% endif %}
+  <p>{{ post.likes.count }} likes</p>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% if request.user == post.author %}
+    <a href="{% url 'delete_post' post.slug %}">Delete Post</a>
+    <a href="{% url 'update_post' post.slug %}">Update Post</a>
+  {% endif %}
+  {% for comment in comments %}
+    <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+        <div class="media-body">
+        <h5 class="mt-0">{{comment.comment_author}}</h5>
+        {{comment.title}}
+        {{comment.body}}
+        {% if request.user == comment.comment_author %}
+          <a href="{% url 'delete_comment' comment.pk %}">Delete Comment</a>
+          <a href="{% url 'update_comment' comment.id %}">Update Comment</a>
+        {% endif %}
+      </div>
+    
+  {% endfor %}
+
+  {% comment %} <a href="{% url 'create_comment' post.id %}"><h2>Comment</h2></a> {% endcomment %}
+  <a href="{% url 'share_post' post.slug %}">Share</a>
+{% endblock %}

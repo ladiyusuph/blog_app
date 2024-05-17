@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <main class="profile-page layout layout--3">
+    <div class="container">
+      <!-- profilePage Start -->
+      <div class="profilePage">
+        <div class="profile">
+          <div class="profile__avatar">
+            <div class="avatar avatar--large active">
+              <img src="{{ profile_user.avatar.url }}" />
+            </div>
+          </div>
+          <div class="profile__info">
+            <h3>{{ profile_user.username }}</h3>
+            <p>@{{ profile_user.username }}</p>
+            {% if request.user == user %}
+              <a href="{% url 'update_user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+            {% endif %}
+          </div>
+          <div class="profile__about">
+            <h3>About</h3>
+            <p>
+              {% if profile_user.bio %}
+                {{ profile_user.bio }}
+              {% endif %}
+            </p>
+          </div>
+          <div>
+            <p>Following:{{ following }} | Followers: {{ followers }}</p>
+          </div>
+          <div>
+            {% if request.user != profile_user %}
+              {% if is_following %}
+                <a href="{% url 'unfollow_user' profile_user.id %}">Unfollow</a>
+              {% else %}
+                <a href="{% url 'follow_user' profile_user.id %}">Follow</a>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="postList__header">
+          <div>
+            <h3>Posts by {{ profile_user.username }}</h3>
+            {% for post in user_post %}
+              <ul>
+                <li>
+                  <a href="{% url 'post_detail' post.slug %}">{{ post }}</a>
+                </li>
+              </ul>
+            {% endfor %}
+          </div>
+          {% if request.user == profile_user %}
+            <div>
+              <h3>Comments by {{ profile_user.username }}</h3>
+              {% for comment in comments %}
+                <ul>
+                  <li>
+                    <h4>{{ comment.post.title }}</h4>
+                    <p>{{ comment }}</p>
+                  </li>
+                </ul>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- profilePage End -->
+    </div>
+  </main>
+{% endblock %}
